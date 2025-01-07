@@ -367,6 +367,4 @@ namespace LabBib.Controllers
             return RedirectToAction(nameof(Index));
         }
     }
-
-    }
 }
