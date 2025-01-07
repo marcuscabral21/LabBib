@@ -12,6 +12,5 @@ namespace LabBib.Models
 
         public string? NomeUtilizador_Perfil { get; set; } // ? = pode ser null
 
-        public string? Foto_Perfil { get; set; } // ? = pode ser null
     }
 }
