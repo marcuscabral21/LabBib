@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LabBib.Controllers
 {
@@ -34,7 +33,7 @@ namespace LabBib.Controllers
                 .ToDictionary(u => u.UserName, u =>
                 {
                     var entry = _context.Entry(u);
-                    return entry.Property <bool>("ContaBloqueada").CurrentValue;
+                    return entry.Property<bool>("ContaBloqueada").CurrentValue;
                 });
 
             var contaAtiva = users
@@ -43,7 +42,7 @@ namespace LabBib.Controllers
                 .ToHashSet();
 
             var utilizadorInativo = users
-                .Where (u => !_context.Entry(u).Property<bool>("ContaAtiva").CurrentValue)
+                .Where(u => !_context.Entry(u).Property<bool>("ContaAtiva").CurrentValue)
                 .ToList();
 
             var activeRoles = new Dictionary<string, List<IdentityUser>>();
@@ -106,16 +105,16 @@ namespace LabBib.Controllers
             {
                 if (!string.IsNullOrEmpty(razaoBloqueio))
                 {
-                    entry.Property("razaoBloqueio").CurrentValue = razaoBloqueio;
+                    entry.Property("RazaoBloqueio").CurrentValue = razaoBloqueio;
                 }
                 else
                 {
-                    entry.Property("razaoBloqueio").CurrentValue = null;
+                    entry.Property("RazaoBloqueio").CurrentValue = null;
                 }
             }
             else
             {
-                entry.Property("razaoBloqueio").CurrentValue = null;
+                entry.Property("RazaoBloqueio").CurrentValue = null;
             }
 
             await _context.SaveChangesAsync();
@@ -317,15 +316,15 @@ namespace LabBib.Controllers
 
             var isLibrarian = await _userManager.IsInRoleAsync(user, "librarian");
 
-            var livrosRequerimentoToUpdate = await _context.LivrosRequerimento
-                .Where(br => br.NomeUtilizador_LivrosRequerimento == user.UserName || br.AceitoPor_LivrosRequerimento == user.UserName || br.Devolvido_LivrosRequerimento == user.UserName)
+            var livrosRequerimentoToUpdate = await _context.LivrosRequerimentos
+                .Where(br => br.NomeUtilizador_LivrosRequerimento == user.UserName || br.AceitoPor_LivrosRequerimento == user.UserName || br.RecusadoPor_LivrosRequerimento == user.UserName)
                 .ToListAsync();
 
             foreach (var request in livrosRequerimentoToUpdate)
             {
                 if (!isLibrarian)
                 {
-                    request.UserName = nomeUtilizador;
+                    request.NomeUtilizador_LivrosRequerimento = nomeUtilizador;
                 }
 
                 if (isLibrarian)
@@ -335,9 +334,9 @@ namespace LabBib.Controllers
                         request.AceitoPor_LivrosRequerimento = nomeUtilizador;
                     }
 
-                    if (request.Devolvido_LivrosRequerimento == user.UserName)
+                    if (request.RecusadoPor_LivrosRequerimento == user.UserName)
                     {
-                        request.Devolvido_LivrosRequerimento = nomeUtilizador;
+                        request.RecusadoPor_LivrosRequerimento = nomeUtilizador;
                     }
                 }
             }

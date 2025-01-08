@@ -4,6 +4,7 @@ using LabBib.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabBib.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250107235758_database")]
+    partial class database
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,116 +24,6 @@ namespace LabBib.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LabBib.Models.Livros", b =>
-                {
-                    b.Property<int>("Id_Livros")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Livros"));
-
-                    b.Property<string>("Autor_Livros")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("DataPublicacao_Livros")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Disponivel_Livros")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Genero_Livros")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ISBN_Livros")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Imagem_Livros")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Titulo_Livros")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id_Livros");
-
-                    b.ToTable("Livros");
-                });
-
-            modelBuilder.Entity("LabBib.Models.LivrosRequerimento", b =>
-                {
-                    b.Property<int>("Id_LivrosRequerimento")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_LivrosRequerimento"));
-
-                    b.Property<string>("AceitoPor_LivrosRequerimento")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Aprovado_LivrosRequerimento")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("DataAprovacao_LivrosRequerimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataDevolucao_LivrosRequerimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DataPrevisaoDevolucao_LivrosRequerimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DataRequerimento_LivrosRequerimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Devolvido_LivrosRequerimento")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LivrosId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NomeUtilizador_LivrosRequerimento")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RecusadoPor_LivrosRequerimento")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Recusado_LivrosRequerimento")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("TituloLivro_LivrosRequerimento")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id_LivrosRequerimento");
-
-                    b.ToTable("LivrosRequerimentos");
-                });
-
-            modelBuilder.Entity("LabBib.Models.Perfil", b =>
-                {
-                    b.Property<int>("Id_Perfil")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Perfil"));
-
-                    b.Property<DateTime>("DataNascimento_Perfil")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NomeUtilizador_Perfil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id_Perfil");
-
-                    b.ToTable("Perfils");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -196,16 +89,6 @@ namespace LabBib.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("ContaAtiva")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("ContaBloqueada")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -235,10 +118,6 @@ namespace LabBib.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("RazaoBloqueio")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

@@ -21,7 +21,7 @@ namespace LabBib.Controllers
         public async Task<IActionResult> Index()
         {
             var UserName = User.Identity.Name;
-            var requests = await _context.LivrosRequerimento
+            var requests = await _context.LivrosRequerimentos
                                          .Where(r => r.NomeUtilizador_LivrosRequerimento == UserName)
                                          .ToListAsync();
 
@@ -31,9 +31,9 @@ namespace LabBib.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> CancelRequest(int id)
+        public async Task<IActionResult> CancelRequest(int id)
         {
-            var request = await _context.LivrosRequerimento.FindAsync(id);
+            var request = await _context.LivrosRequerimentos.FindAsync(id);
 
             if (request == null)
             {
@@ -44,7 +44,7 @@ namespace LabBib.Controllers
             {
                 var livro = await _context.Livros.FindAsync(request.LivrosId);
 
-                _context.LivrosRequerimento.Remove(request);
+                _context.LivrosRequerimentos.Remove(request);
                 await _context.SaveChangesAsync();
                 TempData["SucessMessage"] = "Pedido cancelado com sucesso!";
             }
@@ -52,7 +52,7 @@ namespace LabBib.Controllers
             {
                 TempData["ErrorMessage"] = "Não é possível cancelar o pedido!";
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
     }

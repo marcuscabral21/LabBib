@@ -17,6 +17,8 @@ namespace LabBib.Models
 
         public string? AceitoPor_LivrosRequerimento { get; set; } // ? = pode ser null
 
+        public string? RecusadoPor_LivrosRequerimento { get; set; } // ? = pode ser null
+
         public DateTime? DataAprovacao_LivrosRequerimento { get; set; } // Data de publicação yyyy-MM-dd (ano-mês-dia); ? = pode ser null
 
         public DateTime? DataDevolucao_LivrosRequerimento { get; set; } // Data de publicação yyyy-MM-dd (ano-mês-dia); ? = pode ser null
@@ -28,6 +30,8 @@ namespace LabBib.Models
         public string? TituloLivro_LivrosRequerimento { get; set; } // ? = pode ser null
 
         public string? NomeUtilizador_LivrosRequerimento { get; set; } // ? = pode ser null
+
+        public bool Recusado_LivrosRequerimento { get; set; } // true = recusado, false = não recusado
 
     }
 }
