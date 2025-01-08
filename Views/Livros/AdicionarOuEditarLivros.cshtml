@@ -1,10 +1,10 @@
-﻿@model LabBib.Models.Books
+﻿@model LabBib.Models.Livros
 
-<h2 class="text-center mt-4 mb-4" style="color: black;">@(Model.Id == 0 ? "Adicionar Livro" : "Editar Livro")</h2>
+<h2 class="text-center mt-4 mb-4" style="color: black;">@(Model.Id_Livros == 0 ? "Adicionar Livro" : "Editar Livro")</h2>
 
 <div class="container">
     <form asp-action="AdicionarOuEditarLivros" method="post" enctype="multipart/form-data" class="form-container">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id_Livros" />
 
         <div class="form-group">
             <label asp-for="ISBN_Livros" class="control-label">ISBN</label>

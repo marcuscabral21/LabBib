@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LabBib.Models.Books>
+﻿@model IEnumerable<LabBib.Models.Livros>
 
 <h2>Livros:</h2>
 
@@ -18,13 +18,13 @@
     <tbody>
         @if (Model != null && Model.Any())
         {
-            foreach (var book in Model)
+            foreach (var livro in Model)
             {
                 <tr>
-                    <td>@book.Id_Livros</td>
-                    <td>@book.ISBN_Livros</td>
-                    <td>@book.Titulo_Livros</td>
-                    <td>@book.Autor_Livros</td>
+                    <td>@livro.Id_Livros</td>
+                    <td>@livro.ISBN_Livros</td>
+                    <td>@livro.Titulo_Livros</td>
+                    <td>@livro.Autor_Livros</td>
                     <td>
                         <a asp-action="AdicionarOuEditarLivros" asp-route-id="@livro.Id_Livros" class="btn btn-primary">Editar</a>
                         <form asp-action="ApagarLivro" asp-route-id="@livro.Id_Livros" method="post" style="display:inline;" onsubmit="return confirm('Confirma a exclusão deste livro?');">
