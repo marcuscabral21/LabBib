@@ -1,5 +1,146 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model LabBib.Models.LivrosRequerimento
 @{
+    var livro = (LabBib.Models.Livros)ViewData["Livro"];
 }
+
+<div class="container">
+    <div class="card shadow-lg p-5 rounded">
+        <h2 class="text-center mb-4" style="color: #387c44; font-family: 'Archivo Black', sans-serif;">Confirmar Requisição de Livro</h2>
+
+        <div class="book-details mb-4 text-center">
+            <h4 style="color: #387c44;">Está a efetuar a solicitação do livro.</h4>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <p><strong>Título:</strong> @livro.Titulo_Livros</p>
+                    <p><strong>Autor:</strong> @livro.Autor_Livros</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Género:</strong> @livro.Genero_Livros</p>
+                    <p><strong>Data de Publicação:</strong> @livro.DataPublicacao_Livros</p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                @if (!string.IsNullOrEmpty(livro.Imagem_Livros))
+                {
+                    <img src="@livro.Imagem_Livros" alt="Capa do Livro" class="img-fluid" style="max-width: 200px; border-radius: 8px;" />
+                }
+                else
+                {
+                    <span>Imagem indisponível</span>
+                }
+            </div>
+        </div>
+
+        <form asp-action="Create" method="post" id="requestForm">
+            <input type="hidden" asp-for="LivrosId" value="@livro.Id_Livros" />
+            <input type="hidden" asp-for="TituloLivro_LivrosRequerimento" value="@livro.Titulo_Livros" />
+            <input type="hidden" asp-for="NomeUtilizador_LivrosRequerimento" value="@User.Identity.Name" />
+
+            <div class="form-group">
+                <label for="DataRequerimento_LivrosRequerimento" class="form-label">Data de Levantamento</label>
+                <input type="date" class="form-control" asp-for="DataRequerimento_LivrosRequerimento" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="DataRequerimento_LivrosRequerimento" />
+            </div>
+
+            <div class="form-group">
+                <label for="DataPrevisaoDevolucao_LivrosRequerimento" class="form-label">Data de Entrega</label>
+                <input type="date" class="form-control" asp-for="DataPrevisaoDevolucao_LivrosRequerimento" value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-dd")" id="DataPrevisaoDevolucao_LivrosRequerimento" />
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg">Confirmar Requisição</button>
+            </div>
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-back">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('requestForm').addEventListener('submit', function (event) {
+        const startDate = new Date(document.getElementById('DataRequerimento_LivrosRequerimento').value);
+        const endDate = new Date(document.getElementById('DataPrevisaoDevolucao_LivrosRequerimento').value);
+        const maxDate = new Date(startDate);
+        maxDate.setDate(startDate.getDate() + 7);
+
+        if (endDate > maxDate) {
+            alert('A entrega deve ser feita no máximo 7 dias após a data de levantamento.');
+            event.preventDefault();
+        }
+    });
+</script>
+
+<style>
+    body {
+        font-family: 'Archivo Black', sans-serif;
+        background-color: #387c44;
+        color: #387c44;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 50px auto;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #387c44;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #387c44;
+            box-shadow: 0 0 10px rgba(56, 124, 68, 0.5);
+        }
+
+    .btn-success {
+        background-color: #387c44;
+        color: white;
+        border: none;
+        padding: 15px 50px;
+        font-size: 20px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #306d39;
+            transform: scale(1.05);
+        }
+
+    .book-details .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .book-details .col-md-6 {
+        width: 50%;
+        padding: 15px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+</style>

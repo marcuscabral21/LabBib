@@ -1,5 +1,138 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Criar Utilizador";
 }
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="CriarUtilizador" method="post">
+    <div class="container">
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" id="Email" name="email" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="nomeUtilizador">Nome de Utilizador</label>
+            <input type="text" id="nomeUtilizador" name="nomeUtilizador" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="dataNascimento">Data de Nascimento</label>
+            <input type="date" id="dataNascimento" name="dataNascimento" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Password">Palavra-passe</label>
+            <input type="password" id="Password" name="password" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="ConfirmPassword">Confirmar Palavra-passe</label>
+            <input type="password" id="ConfirmPassword" name="confirmPassword" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Role">Função</label>
+            <select id="Role" name="role" class="form-control" required>
+                <option value="">-- Selecionar Função --</option>
+                <option value="Admin">Administrador</option>
+                <option value="Librarian">Bibliotecário</option>
+                <option value="Reader">Leitor</option>
+            </select>
+        </div>
+
+        <div class="form-group text-center mt-4">
+            <button type="submit" class="btn btn-primary">Criar conta</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+</form>
+
+<style>
+    body {
+        font-family: 'Archivo Black', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 2rem;
+        color: #28a745;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 1rem;
+        color: #555;
+        text-align: left;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+    }
+
+        .form-control:focus {
+            border-color: #28a745;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 128, 0, 0.2);
+        }
+
+    .btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        width: 48%;
+        margin: 10px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+</style>

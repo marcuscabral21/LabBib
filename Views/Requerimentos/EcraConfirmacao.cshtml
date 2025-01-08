@@ -1,5 +1,62 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Requisição Finalizada";
 }
+
+<div class="confirmation-container text-center">
+    <h2>A sua requisição foi enviada!</h2>
+    <p>Na data de início indicada, dirija-se à biblioteca, onde um bibliotecário fará a entrega do livro.</p>
+
+    <div class="mt-4">
+        <a href="/Home" class="btn btn-primary">Home</a>
+    </div>
+</div>
+
+<style>
+    .confirmation-container {
+        background-color: #f7f9fc;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 50px auto;
+        font-family: 'Archivo Black', sans-serif;
+    }
+
+        .confirmation-container h2 {
+            color: #387c44;
+            font-weight: bold;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-container p {
+            font-size: 18px;
+            color: black;
+            margin-bottom: 30px;
+        }
+
+    .btn-primary {
+        background-color: #387c44;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 18px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        font-family: 'Archivo Black', sans-serif;
+    }
+
+        .btn-primary:hover {
+            background-color: #306d39;
+            transform: scale(1.05);
+        }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    .confirmation-container {
+        padding: 30px;
+    }
+</style>

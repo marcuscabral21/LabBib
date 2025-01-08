@@ -1,5 +1,75 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Bibliotecário";
 }
+
+<div class="text-center" style="padding: 40px; background-color: #f0f4f7; border-radius: 15px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); border: 2px solid #007bff;">
+    <h1 class="display-4" style="color: black; font-weight: bold;">Dashboard Bibliotecário</h1>
+    <p class="lead" style="color: black;">Bem-vindo à dashboard do bibliotecário!</p>
+
+    <div class="mt-5">
+        <a href="/Livros" class="btn btn-primary btn-lg" style="border-radius: 30px; padding: 15px 35px; font-size: 18px; box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2); width: 100%; max-width: 300px; border: 2px solid #007bff;">
+            <i class="fas fa-livro" style="margin-right: 10px;"></i> Gerir Livros
+        </a>
+    </div>
+
+    <div class="mt-4">
+        <a href="/Livros/GerenciarRequerimento" class="btn btn-success btn-lg" style="border-radius: 30px; padding: 15px 35px; font-size: 18px; box-shadow: 0 6px 15px rgba(40, 167, 69, 0.2); width: 100%; max-width: 300px; border: 2px solid #28a745;">
+            <i class="fas fa-list" style="margin-right: 10px;"></i> Gerir Requisições
+        </a>
+    </div>
+
+    <div class="mt-4">
+        <a id="notificationsButton" href="/Livros/NotificacoesBiblioteca" class="btn btn-warning btn-lg @if (ViewBag.TemEntregasAtrasadas) {
+        <text>flashing</text>
+ }" style="border-radius: 30px; padding: 15px 35px; font-size: 18px; box-shadow: 0 6px 15px rgba(255, 193, 7, 0.2); width: 100%; max-width: 300px; border: 2px solid #ffc107;">
+            <i class="fas fa-bell" style="margin-right: 10px;"></i> Notificações
+        </a>
+    </div>
+
+    <div class="mt-4">
+        <a href="/" class="btn btn-info btn-lg" style="border-radius: 30px; padding: 15px 35px; font-size: 18px; box-shadow: 0 6px 15px rgba(23, 162, 184, 0.2); width: 100%; max-width: 300px; border: 2px solid #17a2b8;">
+            <i class="fas fa-home" style="margin-right: 10px;"></i> Home
+        </a>
+    </div>
+</div>
+
+<script>
+    const intervaloNoti = 10 * 60 * 1000;
+
+    const currentTime = new Date().getTime();
+
+    const ultimoTempoNoti = sessionStorage.getItem('lastNotificationTime');
+
+    if (!ultimoTempoNoti || currentTime - ultimoTempoNoti >= intervaloNoti) {
+        if (@(ViewBag.TemEntregasAtrasadas.ToString().ToLower())) {
+            alert("Existem entregas pendentes que precisam de ser resolvidas.");
+        }
+        sessionStorage.setItem('ultimoTempoNoti', currentTime);
+    }
+</script>
+
+<style>
+    .btn-sm {
+        padding: 6px 12px;
+    }
+
+    .alert {
+        margin-bottom: 20px;
+    }
+
+    .text-end {
+        text-align: right;
+    }
+
+    h3 {
+        font-weight: bold;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .text-warning {
+        color: #ffcc00;
+    }
+</style>

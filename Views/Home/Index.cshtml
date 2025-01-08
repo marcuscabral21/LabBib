@@ -1,8 +1,244 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<LabBib.Models.Livros>
+@using Microsoft.AspNetCore.Identity
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center" style="background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);">
+    <h1 class="display-4" style="color: #387c44; font-weight: bold;">Biblioteca Virtual</h1>
+    <p style="font-size: 20px; color: #387c44;">Descubra um mundo de conhecimento, explore os nossos livros para expandir os seus horizontes!</p>
+
+    <div class="d-flex flex-wrap justify-content-center align-items-center mt-4">
+        <a href="/Home" class="btn btn-green mx-2">Home Page</a>
+        <a href="/Home/Privacy" class="btn btn-green mx-2">Política de Privacidade</a>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            @if (User.IsInRole("Admin"))
+            {
+                <a href="/Admin" class="btn btn-outline-primary mx-2">Administrador</a>
+            }
+            @if (User.IsInRole("Librarian"))
+            {
+                <a href="/Books/Librarian" class="btn btn-outline-primary mx-2">Bibliotecário</a>
+            }
+            @if (User.IsInRole("Reader"))
+            {
+                <a href="/UserPanel/Index" class="btn btn-outline-info mx-2">Leitor</a>
+            }
+
+            <div class="d-flex align-items-center ms-4">             
+                <span style="color: #000000;">Bem-Vindo: <strong>@User.Identity.Name</strong></span>
+                <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="ms-3">
+                    <button type="submit" class="btn btn-outline-danger">Logout</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <a href="/Identity/Account/Login" class="btn btn-green mx-2">Login</a>
+            <a href="/Identity/Account/Register" class="btn btn-green mx-2">Registar</a>
+        }
+    </div>
 </div>
+
+<div class="mt-5">
+    <h2 class="text-center mb-4" style="color: #000000;">Livros Disponíveis</h2>
+
+    <form method="get" class="mb-4">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="searchTitle" value="@ViewData["PesquisarTitulo"]" class="form-control" placeholder="Pesquisar Título" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="searchAuthor" value="@ViewData["PesquisarAutor"]" class="form-control" placeholder="Pesquisar Autor" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="searchGenre" value="@ViewData["PesquisarGenero"]" class="form-control" placeholder="Pesquisar Género" />
+            </div>
+            <div class="col-md-12 text-end">
+                <button type="submit" class="btn btn-success">Pesquisar</button>
+                <a href="/Home" class="btn btn-secondary">Recomeçar</a>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Capa</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Género</th>
+                <th>Data de Publicação</th>
+                <th class="text-end"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var livro in Model)
+                {
+                    <tr class="table-light">
+                        <td>
+                            @if (!string.IsNullOrEmpty(livro.Imagem_Livros))
+                            {
+                                <img src="@livro.Imagem_Livros" alt="Capa do Livro" style="width: 100px; height: 150px;" />
+                            }
+                            else
+                            {
+                                <span>Imagem indisponível</span>
+                            }
+                        </td>
+                        <td>@livro.Titulo_Livros</td>
+                        <td>@livro.Autor_Livros</td>
+                        <td>@livro.Genero_Livros</td>
+                        <td>@livro.DataPublicacao_Livros</td>
+                        <td class="text-end">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole("Reader"))
+                                {
+                                    var existingRequest = ViewData["PedidosUtilizador"] as List<LabBib.Models.LivrosRequerimento>;
+                                    if (existingRequest != null && existingRequest.Any(r => r.LivrosId == livro.Id_Livros && !r.Devolvido_LivrosRequerimento && !r.Recusado_LivrosRequerimento))
+                                    {
+                                        <span class="text-warning">Há uma solicitação ativa associada a este livro.</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Atualmente indisponível</span>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-danger">Para requisitar um livro é necessário estar logado. Caso não tenha conta faça o registo.</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">Nenhum livro disponível.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-5">
+    <h2 class="text-center mb-4" style="color: #000000;">Informações gerais</h2>
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <p><strong>Biblioteca Virtual</strong></p>
+        <p>Morada: Quinta de Prados, 5000-801 Vila Real</p>
+        <p><strong>Horário de Funcionamento:</strong></p>
+        <p>Segunda a Sexta: 9:00 - 18:00</p>
+        <p>Encerrado aos sábados e domingos</p>
+    </div>
+</div>
+
+<style>
+    .btn-green {
+        background-color: #387c44;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+        display: inline-block;
+        text-align: center;
+    }
+
+        .btn-green:hover {
+            background-color: #276d34;
+            transform: scale(1.05);
+        }
+
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .table-dark th {
+        background-color: black;
+        color: white;
+    }
+
+    .info-box {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+        .info-box p {
+            font-size: 1rem;
+            color: #333;
+        }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .img-thumbnail {
+        width: 100px;
+        height: 150px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+        text-align: center;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+    .text-warning {
+        color: #ffcc00;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .table td, .table th {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+        .table td.text-end {
+            text-align: center;
+        }
+
+    .img-thumbnail {
+        width: 65px;
+        height: 65px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: none;
+    }
+</style>

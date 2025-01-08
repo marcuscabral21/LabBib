@@ -1,5 +1,111 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model LabBib.Models.Books
+
+<h2 class="text-center mt-4 mb-4" style="color: black;">@(Model.Id == 0 ? "Adicionar Livro" : "Editar Livro")</h2>
+
+<div class="container">
+    <form asp-action="AdicionarOuEditarLivros" method="post" enctype="multipart/form-data" class="form-container">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="ISBN_Livros" class="control-label">ISBN</label>
+            <input asp-for="ISBN_Livros" class="form-control" placeholder="Insira o ISBN" />
+            <span asp-validation-for="ISBN_Livros" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Titulo_Livros" class="control-label">Título</label>
+            <input asp-for="Titulo_Livros" class="form-control" placeholder="Insira o título do livro" />
+            <span asp-validation-for="Titulo_Livros" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Autor_Livros" class="control-label">Autor</label>
+            <input asp-for="Autor_Livros" class="form-control" placeholder="Insira o nome do autor" />
+            <span asp-validation-for="Autor_Livros" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Genero_Livros" class="control-label">Género</label>
+            <input asp-for="Genero_Livros" class="form-control" placeholder="Insira o género" />
+            <span asp-validation-for="Genero_Livros" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DataPublicacao_Livros" class="control-label">Data de Publicação</label>
+            <input asp-for="DataPublicacao_Livros" class="form-control" type="number" placeholder="Insira a data de publicação" />
+            <span asp-validation-for="DataPublicacao_Livros" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Imagem_Livros" class="control-label">Capa do Livro</label>
+            <input type="file" name="Imagem_Livros" class="form-control" />
+            @if (!string.IsNullOrEmpty(Model.Imagem_Livros))
+            {
+                <img src="@Model.Imagem_Livros" alt="Capa Atual" class="img-fluid mt-2" style="max-height: 200px;" />
+            }
+        </div>
+
+        <div class="form-actions text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary btn-lg">Voltar</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        background-color: #f9f9f9;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .btn-primary {
+        background-color: #387c44;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #306d39;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a636a;
+        }
+
+    .form-group label {
+        font-weight: bold;
+        color: #387c44;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ced4da;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+    }
+
+        .form-actions .btn {
+            width: 150px;
+            margin: 10px;
+        }
+
+    .text-danger {
+        font-size: 0.875em;
+        color: #d9534f;
+    }
+
+    h2 {
+        color: #387c44;
+    }
+</style>

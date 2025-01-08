@@ -1,5 +1,150 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+@using Microsoft.AspNetCore.Identity
+@using System.Collections.Generic
+
+<h2 class="text-center mb-4">Controlo de Utilizadores</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <a href="/" class="btn btn-back">Voltar</a>
+    <a asp-action="CriarUtilizador" class="btn btn-success">Criar Utilizador</a>
+</div>
+
+<div class="card mb-5">
+    <div class="card-header bg-primary text-white">
+        <h4 class="m-0">Contas Ativas</h4>
+    </div>
+    <div class="card-body">
+        @foreach (var role in ViewData["ActiveRoles"] as Dictionary<string, List<IdentityUser>>)
+        {
+            <h5 class="mt-4">
+                @if (role.Key == "Librarian")
+                {
+                    @:Bibliotecário
+                }
+                else if (role.Key == "Admin")
+                {
+                    @:Administrador
+                }
+                else if (role.Key == "Reader")
+                {
+                    @:Leitor
+                }
+            </h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th class="text-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in role.Value)
+                    {
+                        var userManager = ViewData["UserManager"] as UserManager<IdentityUser>;
+                        var userBlocks = ViewData["UserBlocks"] as Dictionary<string, bool>;
+                        var isBlocked = userBlocks.ContainsKey(user.UserName) && userBlocks[user.UserName];
+                        var isActive = ViewData["ActiveAccounts"] is HashSet<string> activeAccounts && activeAccounts.Contains(user.Id);
+
+                        if (isActive)
+                        {
+                            var userRoles = userManager?.GetRolesAsync(user).Result ?? new List<string>();
+                            var isAdmin = userRoles.Contains("Admin");
+
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td class="text-end">
+                                    @if (!isAdmin)
+                                    {
+                                        <a asp-action="EditarUtilizador" asp-route-id="@user.Id" class="btn btn-primary btn-sm mr-2">Editar</a>
+
+                                        <form asp-action="ModificarBloqueioConta" asp-route-id="@user.Id" method="post" style="display:inline;" onsubmit="return confirm('Confirma a alteração do estado de bloqueio?');">
+                                            <button type="submit" class="btn btn-@(isBlocked ? "success" : "warning") btn-sm mr-2">
+                                                @(isBlocked ? "Desbloquear" : "Bloquear")
+                                            </button>
+
+                                            @if (!isBlocked)
+                                            {
+                                                <div class="form-group">
+                                                    <label for="razaoBloqueio">Razão do Bloqueio (opcional):</label>
+                                                    <input type="text" name="razaoBloqueio" id="razaoBloqueio" class="form-control" placeholder="Insira a razão do bloqueio" />
+                                                </div>
+                                            }
+                                        </form>
+
+                                        <form asp-action="RemoverUtilizador" asp-route-id="@user.Id" method="post" style="display:inline;" onsubmit="return confirm('Confirma a exclusão deste utilizador?');">
+                                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary btn-sm mr-2" disabled>Editar</button>
+
+                                        <button class="btn btn-@(isBlocked ? "success" : "warning") btn-sm mr-2" disabled>
+                                            @(isBlocked ? "Desbloquear" : "Bloquear")
+                                        </button>
+
+                                        <button class="btn btn-danger btn-sm" disabled>Excluir</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-secondary text-white">
+        <h4 class="m-0">Contas Inativas</h4>
+    </div>
+    <div class="card-body">
+        @foreach (var role in ViewData["InactiveRoles"] as Dictionary<string, List<IdentityUser>>)
+        {
+            <h5 class="mt-4">
+                @if (role.Key == "Librarian")
+                {
+                    @:Bibliotecário
+                }
+                else if (role.Key == "Admin")
+                {
+                    @:Administrador
+                }
+                else if (role.Key == "Reader")
+                {
+                    @:Leitor
+                }
+            </h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th class="text-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in role.Value)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td class="text-end">
+                                <form asp-action="AtivarConta" asp-route-id="@user.Id" method="post" style="display:inline;" onsubmit="return confirm('Confirma a ativação desta conta?');">
+                                    <button type="submit" class="btn btn-success btn-sm">Ativar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

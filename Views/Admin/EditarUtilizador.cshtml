@@ -1,5 +1,125 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+
+<h2 class="page-title">Editar Utilizador</h2>
+
+<form asp-action="EditarUtilizador" method="post" class="profile-form">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" placeholder="Insira o seu email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UserName" class="form-label">Nome de utilizador</label>
+        <input asp-for="UserName" class="form-control" placeholder="Insira um nome de utilizador" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="dataNascimento" class="form-label">Data de nascimento</label>
+        <input type="date" id="dataNascimento" name="dataNascimento" class="form-control" value="@ViewBag.dataNascimento?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" disabled placeholder="Alterações na palavra-passe não estão permitidas aqui." />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Função</label>
+        <input type="text" class="form-control" disabled value="Alterações na função não estão permitidas neste contexto." />
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-save">Guardar</button>
+        <a asp-action="Index" class="btn btn-cancel">Voltar</a>
+    </div>
+</form>
+
+<style>
+    body {
+        font-family: 'Archivo Black', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page-title {
+        text-align: center;
+        color: black;
+        font-size: 2rem;
+        margin-top: 40px;
+    }
+
+    .profile-form {
+        width: 100%;
+        max-width: 500px;
+        margin: 20px auto;
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 1rem;
+    }
+
+        .form-control:focus {
+            border-color: #0056b3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+        }
+
+    .text-danger {
+        font-size: 0.9rem;
+        color: #e74c3c;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-save {
+        background-color: #28a745;
+        color: white;
+    }
+
+        .btn-save:hover {
+            background-color: #218838;
+        }
+
+    .btn-cancel {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+</style>

@@ -31,7 +31,7 @@ namespace LabBib.Controllers
                 LivrosId = id
             };
 
-            ViewData["Book"] = livro;
+            ViewData["Livro"] = livro;
             return View(requisicaoLivro);
         }
 
